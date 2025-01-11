@@ -1,8 +1,6 @@
 from machine import I2C, Pin
 import time
 
-
-
 # 定义 I2C 地址和电机特定地址
 I2C_ADDR = 0x34
 ADC_BAT_ADDR = 0x00
