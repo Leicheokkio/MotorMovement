@@ -35,22 +35,20 @@ wire_write_data_array(MOTOR_TYPE_ADDR, [MotorType])
 wire_write_data_array(MOTOR_ENCODER_POLARITY_ADDR, [MotorEncoderPolarity])
 
 # 定义速度数组
-p1 = [100, 100, 100, 100]
-p2 = [-100, -100, -100, -100]
+p1 = [100, 100, 100, 100]  # 马达正转
+p2 = [-100, -100, -100, -100]  # 马达反转
 s1 = [50, 50, 50, 50]
 s2 = [-50, -50, -50, -50]
 stop = [0, 0, 0, 0]
 EncodeTotal = [0, 0, 0, 0]  # 初始化电机编码器总值
 
 # 定义启动和停止按钮引脚
-start_button_pin_1 = Pin(23, Pin.IN, Pin.PULL_UP)
-start_button_pin_2 = Pin(25, Pin.IN, Pin.PULL_UP)
-stop_button_pin_1 = Pin(26, Pin.IN, Pin.PULL_UP)
-stop_button_pin_2 = Pin(32, Pin.IN, Pin.PULL_UP)
+start_button_pin_1 = Pin(23, Pin.IN, Pin.PULL_UP)  # 马达正转
+start_button_pin_2 = Pin(25, Pin.IN, Pin.PULL_UP)  # 啟動按鈕
+stop_button_pin_1 = Pin(26, Pin.IN, Pin.PULL_UP)  # 停止按鈕
+stop_button_pin_2 = Pin(32, Pin.IN, Pin.PULL_UP)  # 马达反转
 
-#Pin 34 與 usb uart
-
-
+# Pin 34 與 USB UART
 
 motor_running = False
 
@@ -58,6 +56,12 @@ def start_motor():
     global motor_running
     if not motor_running:
         wire_write_data_array(MOTOR_FIXED_SPEED_ADDR, p1)
+        motor_running = True
+        
+def start_motor_1():
+    global motor_running
+    if not motor_running:
+        wire_write_data_array(MOTOR_FIXED_SPEED_ADDR, p2)
         motor_running = True
 
 def stop_motor():
@@ -72,7 +76,7 @@ while True:
     if start_button_pin_1.value() == 0:
         start_motor()
     if start_button_pin_2.value() == 0:
-        start_motor()
+        start_motor_1()
 
     if stop_button_pin_2.value() == 0:
         stop_motor()
